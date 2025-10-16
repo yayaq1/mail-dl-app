@@ -39,22 +39,22 @@ export default function FolderSelector({
 
   return (
     <div className="w-full max-w-md mx-auto animate-fade-in">
-      <div className="bg-white rounded-lg shadow-lg p-8 transition-all-smooth hover:shadow-xl">
-        <div className="text-center mb-6">
-          <div className="inline-block p-3 bg-green-100 rounded-full mb-4">
-            <Folder className="w-8 h-8 text-green-600" />
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 sm:p-8 transition-all-smooth hover:shadow-xl">
+        <div className="text-center mb-4">
+          <div className="inline-block p-2 bg-green-100 dark:bg-green-900 rounded-full mb-3">
+            <Folder className="w-6 h-6 text-green-600 dark:text-green-400" />
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
             Select Email Folder
           </h2>
-          <p className="text-gray-600">
+          <p className="text-sm text-gray-600 dark:text-gray-300">
             Choose a folder to extract PDF attachments from
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-3">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Search Folders
             </label>
             <input
@@ -62,13 +62,13 @@ export default function FolderSelector({
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Type to search..."
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 bg-white text-gray-900 placeholder-gray-400 transition-all-smooth hover:border-green-400"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 transition-all-smooth hover:border-green-400"
               disabled={loading}
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Available Folders ({filteredFolders.length})
             </label>
             <Select
@@ -76,17 +76,17 @@ export default function FolderSelector({
               onValueChange={setSelectedFolder}
               disabled={loading}
             >
-              <SelectTrigger className="w-full bg-white text-gray-900 border-gray-300 hover:border-green-400 focus:ring-green-500 focus:ring-2">
+              <SelectTrigger className="w-full bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 border-gray-300 dark:border-gray-600 hover:border-green-400 focus:ring-green-500 focus:ring-2">
                 <SelectValue placeholder="Select a folder..." />
               </SelectTrigger>
-              <SelectContent className="bg-white">
+              <SelectContent className="bg-white dark:bg-gray-800">
                 {filteredFolders.length === 0 ? (
                   <div className="p-4 text-center text-gray-500 text-sm">
                     No folders found
                   </div>
                 ) : (
                   filteredFolders.map((folder) => (
-                    <SelectItem key={folder} value={folder} className="text-gray-900">
+                    <SelectItem key={folder} value={folder} className="text-gray-900 dark:text-gray-100">
                       {folder}
                     </SelectItem>
                   ))
@@ -100,7 +100,7 @@ export default function FolderSelector({
               type="button"
               onClick={onBack}
               disabled={loading}
-              className="flex-1 bg-gray-200 text-gray-700 py-2 px-4 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 disabled:bg-gray-100 disabled:cursor-not-allowed transition-all-smooth transform hover:scale-[1.02] active:scale-[0.98]"
+              className="flex-1 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 py-2 px-4 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400 disabled:bg-gray-100 dark:disabled:bg-gray-800 disabled:cursor-not-allowed transition-all-smooth transform hover:scale-[1.02] active:scale-[0.98]"
             >
               Back
             </button>

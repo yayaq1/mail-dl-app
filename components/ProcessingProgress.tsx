@@ -175,16 +175,16 @@ export default function ProcessingProgress({
 
   return (
     <div className="w-full max-w-2xl mx-auto animate-fade-in">
-      <div className="bg-white rounded-lg shadow-lg p-6">
-        <div className="mb-6">
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Downloading PDFs</h2>
-          <p className="text-gray-600">Folder: {folder}</p>
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4 sm:p-6">
+        <div className="mb-4">
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">Downloading PDFs</h2>
+          <p className="text-sm text-gray-600 dark:text-gray-300">Folder: {folder}</p>
         </div>
 
         {/* Progress Bar */}
         {progress.total > 0 && (
-          <div className="mb-6">
-            <div className="flex justify-between text-sm text-gray-600 mb-2">
+          <div className="mb-4">
+            <div className="flex justify-between text-sm text-gray-600 dark:text-gray-300 mb-2">
               <span>Progress: {progress.current} / {progress.total} emails</span>
               <span>{Math.round((progress.current / progress.total) * 100)}%</span>
             </div>
@@ -198,7 +198,7 @@ export default function ProcessingProgress({
         )}
 
         {/* Live Logs */}
-        <div className="bg-gray-900 rounded-lg p-4 mb-4 h-96 overflow-y-auto font-mono text-sm">
+        <div className="bg-gray-900 dark:bg-gray-900 rounded-lg p-4 mb-4 h-64 sm:h-96 overflow-y-auto font-mono text-sm">
           {logs.map((log, index) => (
             <div
               key={index}

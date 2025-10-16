@@ -17,20 +17,20 @@ export default function DownloadResult({
 }: DownloadResultProps) {
   return (
     <div className="w-full max-w-md mx-auto animate-fade-in">
-      <div className="bg-white rounded-lg shadow-lg p-8 transition-all-smooth hover:shadow-xl">
-        <div className="text-center mb-6">
-          <div className="inline-block p-3 bg-green-100 rounded-full mb-4">
-            <CheckCircle2 className="w-12 h-12 text-green-600" />
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 sm:p-8 transition-all-smooth hover:shadow-xl">
+        <div className="text-center mb-4">
+          <div className="inline-block p-2 bg-green-100 dark:bg-green-900 rounded-full mb-3">
+            <CheckCircle2 className="w-8 h-8 sm:w-12 sm:h-12 text-green-600 dark:text-green-400" />
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
             Processing Complete!
           </h2>
-          <p className="text-gray-600">
+          <p className="text-sm text-gray-600 dark:text-gray-300">
             Your files have been downloaded successfully
           </p>
         </div>
 
-        <div className="space-y-4 mb-6">
+        <div className="space-y-3 mb-4">
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center">
@@ -74,12 +74,12 @@ export default function DownloadResult({
           </div>
         </div>
 
-        <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-6">
+        <div className="bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg p-4 mb-4">
           <div className="flex items-start">
-            <Download className="w-5 h-5 text-gray-600 mr-3 mt-0.5" />
-            <div className="text-sm text-gray-700">
+            <Download className="w-5 h-5 text-gray-600 dark:text-gray-400 mr-3 mt-0.5" />
+            <div className="text-sm text-gray-700 dark:text-gray-300">
               <p className="font-medium mb-1">Download Contents:</p>
-              <ul className="list-disc list-inside space-y-1 text-gray-600">
+              <ul className="list-disc list-inside space-y-1 text-gray-600 dark:text-gray-400">
                 <li>All PDF & DOCX attachments</li>
                 <li>Excel summary with email metadata</li>
                 <li>Organized in a ZIP archive</li>
@@ -95,7 +95,7 @@ export default function DownloadResult({
           Process Another Folder
         </button>
 
-        <p className="text-xs text-gray-500 text-center mt-4">
+        <p className="text-xs text-gray-500 dark:text-gray-400 text-center mt-4">
           Your session and credentials have been cleared for security
         </p>
       </div>

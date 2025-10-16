@@ -2,6 +2,7 @@ export interface EmailProvider {
   name: string;
   imap: string;
   port: number;
+  available?: boolean;
 }
 
 export interface SessionData {

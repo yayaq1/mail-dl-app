@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Loader2, Mail, Lock, Server, Network } from 'lucide-react';
 import ProviderSelector from '@/components/ProviderSelector';
+import { getProviderList } from '@/lib/providers';
 
 interface EmailLoginFormProps {
   onSuccess: (folders: string[]) => void;
@@ -12,10 +13,11 @@ interface EmailLoginFormProps {
 export default function EmailLoginForm({ onSuccess, onError }: EmailLoginFormProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [provider, setProvider] = useState('gmail');
+  const [provider, setProvider] = useState('dreamhost');
   const [customImap, setCustomImap] = useState('');
   const [customPort, setCustomPort] = useState('993');
   const [loading, setLoading] = useState(false);
+  const providers = getProviderList();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,6 +39,11 @@ export default function EmailLoginForm({ onSuccess, onError }: EmailLoginFormPro
       } else {
         const selectedProvider = providers.find((p) => p.id === provider);
         if (selectedProvider) {
+          if (!selectedProvider.provider.available) {
+            onError('This email provider is not yet available. Please select Dreamhost Webmail or use Custom IMAP Server.');
+            setLoading(false);
+            return;
+          }
           imapServer = selectedProvider.provider.imap;
           imapPort = selectedProvider.provider.port;
         }
@@ -69,20 +76,20 @@ export default function EmailLoginForm({ onSuccess, onError }: EmailLoginFormPro
 
   return (
     <div className="w-full max-w-md mx-auto animate-fade-in">
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 transition-all-smooth hover:shadow-xl">
-        <div className="text-center mb-8">
-          <div className="inline-block p-3 bg-blue-100 dark:bg-blue-900 rounded-full mb-4">
-            <Mail className="w-8 h-8 text-blue-600 dark:text-blue-400" />
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 sm:p-8 transition-all-smooth hover:shadow-xl">
+        <div className="text-center mb-6">
+          <div className="inline-block p-2 bg-blue-100 dark:bg-blue-900 rounded-full mb-3">
+            <Mail className="w-6 h-6 text-blue-600 dark:text-blue-400" />
           </div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
             Email Bulk Attachment Downloader
           </h1>
-          <p className="text-gray-600 dark:text-gray-300">
+          <p className="text-sm text-gray-600 dark:text-gray-300">
             Download all PDF attachments in bulk - Perfect for recruiters
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-3">
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Email Provider
@@ -180,8 +187,8 @@ export default function EmailLoginForm({ onSuccess, onError }: EmailLoginFormPro
           </button>
         </form>
 
-        <div className="mt-6 text-xs text-gray-500 dark:text-gray-400 text-center">
-          <p>Supports Gmail, Outlook, Yahoo, iCloud, Zoho, FastMail, AT&T, Verizon, GoDaddy, and 15+ more providers</p>
+        <div className="mt-4 text-xs text-gray-500 dark:text-gray-400 text-center">
+          <p>Currently supports Dreamhost Webmail. More providers coming soon!</p>
         </div>
       </div>
     </div>

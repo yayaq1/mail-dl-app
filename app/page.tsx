@@ -78,10 +78,10 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex flex-col relative">
+    <div className="h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex flex-col relative overflow-hidden">
       <Header />
-      <div className="flex-1 flex items-center justify-center py-8 px-4 sm:px-6 lg:px-8">
-        <div className="w-full max-w-md mx-auto">
+      <div className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8 overflow-y-auto">
+        <div className="w-full max-w-md mx-auto py-4">
         {error && (
           <div className="w-full mb-6">
             <div className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-start">
@@ -138,7 +138,7 @@ export default function Home() {
         </div>
       </div>
 
-      <footer className="mt-auto py-4 px-4 sm:px-6 lg:px-8 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border-t border-gray-200 dark:border-gray-700">
+      <footer className="py-3 px-4 sm:px-6 lg:px-8 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border-t border-gray-200 dark:border-gray-700 flex-shrink-0">
         <div className="w-full max-w-md mx-auto text-center">
           <div className="space-y-2">
             <p className="text-xs text-gray-600 dark:text-gray-300">
@@ -153,7 +153,14 @@ export default function Home() {
               </a>
             </p>
             <div className="flex items-center justify-center gap-2">
-              <span className="text-xs text-gray-500 dark:text-gray-400">Open source</span>
+              <a
+                href="https://github.com/yayaq1/mail-dl-app"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 hover:underline font-medium transition-colors"
+              >
+                Open source / Feel free to contribute :)
+              </a>
             </div>
           </div>
         </div>

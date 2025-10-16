@@ -72,14 +72,19 @@ export default function ProviderSelector({ value, onValueChange, disabled }: Pro
                     setSearch('');
                   };
                   
+                  const isDisabled = !provider.provider.available;
+                  
                   return (
                     <div
                       key={provider.id}
                       className={cn(
-                        "relative flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-900 dark:text-gray-100",
+                        "relative flex select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none text-gray-900 dark:text-gray-100",
+                        isDisabled 
+                          ? "cursor-not-allowed opacity-50" 
+                          : "cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700",
                         value === provider.id && "bg-blue-50 dark:bg-blue-900/20"
                       )}
-                      onClick={handleSelect}
+                      onClick={isDisabled ? undefined : handleSelect}
                     >
                       <Check
                         className={cn(
