@@ -79,9 +79,9 @@ export default function EmailLoginForm({ onSuccess, onError }: EmailLoginFormPro
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 sm:p-8 transition-all-smooth hover:shadow-xl">
         <div className="text-center mb-6">
           <div className="inline-block p-2 bg-blue-100 dark:bg-blue-900 rounded-full mb-3">
-            <Mail className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+            <Mail className="w-6 h-6 text-[#2C64FF]" />
           </div>
-          <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+          <h1 className="font-serif text-xl sm:text-2xl font-light text-gray-900 dark:text-gray-100 mb-2">
             Email Bulk Attachment Downloader
           </h1>
           <p className="text-sm text-gray-600 dark:text-gray-300">

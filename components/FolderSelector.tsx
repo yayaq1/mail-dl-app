@@ -44,7 +44,7 @@ export default function FolderSelector({
           <div className="inline-block p-2 bg-green-100 dark:bg-green-900 rounded-full mb-3">
             <Folder className="w-6 h-6 text-green-600 dark:text-green-400" />
           </div>
-          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+          <h2 className="font-serif text-xl sm:text-2xl font-light text-gray-900 dark:text-gray-100 mb-2">
             Select Email Folder
           </h2>
           <p className="text-sm text-gray-600 dark:text-gray-300">

@@ -1,8 +1,16 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Shield, Lock, Eye, Trash2, Clock } from 'lucide-react';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -11,6 +19,7 @@ if (typeof window !== "undefined") {
 export function ScrollHighlightSection() {
   const containerRef = useRef<HTMLElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  const [showPrivacyModal, setShowPrivacyModal] = useState(false);
 
   useEffect(() => {
     if (!containerRef.current || !contentRef.current) return;
@@ -91,7 +100,7 @@ export function ScrollHighlightSection() {
     ));
   };
 
-  const renderWord = (word: string, isHighlight = false, isCTA = false) => {
+  const renderWord = (word: string, isHighlight = false, isCTA = false, isPrivacyLink = false) => {
     if (isCTA) {
       return (
         <a 
@@ -103,6 +112,17 @@ export function ScrollHighlightSection() {
             {splitText(word)}
           </span>
         </a>
+      );
+    }
+    if (isPrivacyLink) {
+      return (
+        <button
+          onClick={() => setShowPrivacyModal(true)}
+          className="highlight-word whitespace-nowrap cursor-pointer hover:text-[#2C64FF] transition-colors"
+          style={{ opacity: 0.25 }}
+        >
+          {splitText(word)}
+        </button>
       );
     }
     if (isHighlight) {
@@ -125,7 +145,7 @@ export function ScrollHighlightSection() {
         className="flex items-center justify-center min-h-screen"
       >
         <div className="w-full max-w-6xl mx-auto px-8">
-          <h4 className="font-serif text-3xl md:text-4xl lg:text-5xl font-light leading-[1.8] md:leading-[1.9] text-center">
+          <h4 className="font-serif text-3xl md:text-4xl lg:text-5xl font-light leading-[1.8] md:leading-[1.9] text-center text-gray-900 dark:text-[#F7F7F7]">
             {renderWord("Recruiters", true)}{" "}
             {renderWord("receive")}{" "}
             {renderWord("hundreds")}{" "}
@@ -161,12 +181,75 @@ export function ScrollHighlightSection() {
             {renderWord("summary")}{" "}
             {renderWord("of")}{" "}
             {renderWord("candidates.")}{" "}
-            {renderWord("Secure.", true)}{" "}
+            {renderWord("Secure.", false, false, true)}{" "}
             {renderWord("Open-source.", true)}{" "}
             {renderWord("Try it free.", false, true)}
           </h4>
         </div>
       </div>
+      
+      {/* Privacy Modal */}
+      <Dialog open={showPrivacyModal} onOpenChange={setShowPrivacyModal}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Shield className="w-5 h-5 text-blue-600" />
+              Privacy & Security
+            </DialogTitle>
+            <DialogDescription>
+              How we protect your data and privacy
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-4">
+            <div className="flex items-start gap-3">
+              <Lock className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
+              <div>
+                <h4 className="font-medium text-sm text-gray-900 dark:text-gray-100">Encrypted Storage</h4>
+                <p className="text-xs text-gray-600 dark:text-gray-300">Your credentials are encrypted using iron-session and stored only temporarily in secure cookies.</p>
+              </div>
+            </div>
+            
+            <div className="flex items-start gap-3">
+              <Eye className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
+              <div>
+                <h4 className="font-medium text-sm text-gray-900 dark:text-gray-100">No Data Collection</h4>
+                <p className="text-xs text-gray-600 dark:text-gray-300">We don&apos;t collect, store, or track any personal information beyond what&apos;s necessary for the service.</p>
+              </div>
+            </div>
+            
+            <div className="flex items-start gap-3">
+              <Clock className="w-5 h-5 text-orange-600 mt-0.5 flex-shrink-0" />
+              <div>
+                <h4 className="font-medium text-sm text-gray-900 dark:text-gray-100">Auto-Expiration</h4>
+                <p className="text-xs text-gray-600 dark:text-gray-300">Your session automatically expires after 30 minutes for security.</p>
+              </div>
+            </div>
+            
+            <div className="flex items-start gap-3">
+              <Trash2 className="w-5 h-5 text-red-600 mt-0.5 flex-shrink-0" />
+              <div>
+                <h4 className="font-medium text-sm text-gray-900 dark:text-gray-100">No Permanent Storage</h4>
+                <p className="text-xs text-gray-600 dark:text-gray-300">All temporary files and data are automatically deleted after processing.</p>
+              </div>
+            </div>
+          </div>
+          
+          <div className="pt-4 border-t border-gray-200 dark:border-gray-600">
+            <p className="text-xs text-gray-500 dark:text-gray-400 text-center">
+              This is an open-source project. View the code on{' '}
+              <a 
+                href="https://github.com/yayaq1/mail-dl-app" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-blue-600 dark:text-blue-400 hover:underline"
+              >
+                GitHub
+              </a>
+            </p>
+          </div>
+        </DialogContent>
+      </Dialog>
     </section>
   );
 }
