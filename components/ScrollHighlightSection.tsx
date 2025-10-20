@@ -43,7 +43,7 @@ export function ScrollHighlightSection() {
       scrollTrigger: {
         trigger: container,
         start: "top top",
-        end: "95% bottom", // Use 95% of the scroll distance for character animation
+        end: "85% bottom", // Finish animation earlier so last words highlight before scroll ends
         scrub: 2,
       },
     });
@@ -54,8 +54,8 @@ export function ScrollHighlightSection() {
         opacity: 1,
         scrollTrigger: {
           trigger: container,
-          start: `${index * 12}% top`,
-          end: `${95 - (highlightWords.length - index) * 12}% bottom`,
+          start: `${index * 10}% top`,
+          end: `${85 - (highlightWords.length - index) * 10}% bottom`,
           scrub: 2,
           onEnter: () => {
             word.classList.add("underline", "decoration-2", "underline-offset-[0.35em]", "decoration-[#2C64FF]");
@@ -91,7 +91,20 @@ export function ScrollHighlightSection() {
     ));
   };
 
-  const renderWord = (word: string, isHighlight = false) => {
+  const renderWord = (word: string, isHighlight = false, isCTA = false) => {
+    if (isCTA) {
+      return (
+        <a 
+          href="/app"
+          className="highlight-word whitespace-nowrap inline-block border-2 border-[#2C64FF] rounded-2xl px-6 py-2 mt-2 hover:bg-[#2C64FF]/10 transition-all cursor-pointer"
+          style={{ opacity: 0.25 }}
+        >
+          <span className="text-[#2C64FF] font-medium underline decoration-2 underline-offset-4">
+            {splitText(word)}
+          </span>
+        </a>
+      );
+    }
     if (isHighlight) {
       return (
         <span className="highlight-word whitespace-nowrap" style={{ opacity: 0.25 }}>
@@ -150,7 +163,7 @@ export function ScrollHighlightSection() {
             {renderWord("candidates.")}{" "}
             {renderWord("Secure.", true)}{" "}
             {renderWord("Open-source.", true)}{" "}
-            {renderWord("Try it free.", true)}
+            {renderWord("Try it free.", false, true)}
           </h4>
         </div>
       </div>

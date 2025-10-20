@@ -29,28 +29,6 @@ export function LandingHeader() {
             </h1>
           </div>
 
-          {/* Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
-            <a
-              href="#features"
-              className="text-sm text-[#A0A0A0] hover:text-[#F7F7F7] transition-colors"
-            >
-              Features
-            </a>
-            <a
-              href="#pricing"
-              className="text-sm text-[#A0A0A0] hover:text-[#F7F7F7] transition-colors"
-            >
-              Pricing
-            </a>
-            <a
-              href="#contact"
-              className="text-sm text-[#A0A0A0] hover:text-[#F7F7F7] transition-colors"
-            >
-              Contact
-            </a>
-          </nav>
-
           {/* CTA Button */}
           <div>
             <a
