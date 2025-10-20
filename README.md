@@ -1,23 +1,34 @@
-# Email PDF Extractor Web App
+# Mail DL - Email Attachment Downloader
 
-A Next.js web application that allows users to extract PDF attachments from their email inbox. Built with TypeScript, React, and deployed on Vercel.
+A beautiful Next.js web application with an elegant landing page that allows users to bulk download PDF and DOCX attachments from their email inbox. Built with TypeScript, React, GSAP animations, and deployed on Vercel.
 
 ## Features
 
+### Landing Page
+- ✨ Beautiful, animated hero section with GSAP
+- 📜 Smooth scroll effects with Lenis
+- 🎨 Modern, elegant design with Crimson Pro typography
+- 🌗 Light/Dark mode support
+- 📱 Fully responsive design
+
+### Application
 - 🔐 Secure email authentication with session-based credential storage
 - 📧 Support for multiple email providers (Gmail, Outlook, Yahoo, Dreamhost, iCloud, AOL, and custom IMAP)
 - 📁 Browse and select email folders
-- 📎 Extract all PDF attachments from selected folder
+- 📎 Extract all PDF and DOCX attachments from selected folder
 - 📊 Generate Excel summary with email metadata
 - 📦 Download everything as a ZIP archive
 - 🛡️ Encrypted session data with auto-expiration
-- 🎨 Modern, responsive UI with Tailwind CSS
+- 🌈 Modern, responsive UI with Tailwind CSS and theme toggle
 
 ## Tech Stack
 
 - **Framework**: Next.js 14 (App Router)
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS
+- **Animations**: GSAP (GreenSock Animation Platform)
+- **Smooth Scrolling**: Lenis
+- **Typography**: Crimson Pro (Google Fonts)
 - **Email**: IMAP protocol via `imap` package
 - **PDF Processing**: Custom processing with `mailparser`
 - **Excel Generation**: `exceljs`
@@ -58,7 +69,8 @@ A Next.js web application that allows users to extract PDF attachments from thei
    ```
 
 5. **Open your browser**
-   Navigate to [http://localhost:3000](http://localhost:3000)
+   - Landing page: [http://localhost:3000](http://localhost:3000)
+   - Main application: [http://localhost:3000/app](http://localhost:3000/app)
 
 ## Deployment to Vercel
 
@@ -193,29 +205,43 @@ The app is configured for Vercel with:
 ## Project Structure
 
 ```
-web-app/
+mail-dl-app/
 ├── app/
-│   ├── api/
+│   ├── api/                    # API routes
 │   │   ├── folders/route.ts    # Fetch email folders
-│   │   ├── process/route.ts    # Process emails and extract PDFs
+│   │   ├── process/route.ts    # Process emails (legacy)
+│   │   ├── process-stream/route.ts  # Stream processing (recommended)
+│   │   ├── download-zip/route.ts    # Download ZIP file
 │   │   └── logout/route.ts     # Clear session
-│   ├── page.tsx                # Main application page
+│   ├── app/                    # Main application route
+│   │   ├── page.tsx            # Application page
+│   │   └── layout.tsx          # App-specific layout
+│   ├── page.tsx                # Landing page
 │   ├── layout.tsx              # Root layout
-│   └── globals.css             # Global styles
+│   └── globals.css             # Global styles with theme support
 ├── components/
+│   ├── LandingHeader.tsx       # Landing page header with theme toggle
+│   ├── HeroSection.tsx         # Animated hero section
+│   ├── ScrollHighlightSection.tsx  # GSAP scroll animations
+│   ├── LandingFooter.tsx       # Landing page footer
+│   ├── SmoothScroll.tsx        # Lenis smooth scroll wrapper
 │   ├── EmailLoginForm.tsx      # Login form component
 │   ├── FolderSelector.tsx      # Folder selection component
-│   └── DownloadResult.tsx      # Results display component
+│   ├── ProcessingProgress.tsx  # Real-time processing display
+│   ├── DownloadResult.tsx      # Results display component
+│   ├── Header.tsx              # App header
+│   ├── ThemeToggle.tsx         # Light/Dark mode toggle
+│   └── ui/                     # Reusable UI components
 ├── lib/
 │   ├── imap.ts                 # IMAP client implementation
 │   ├── providers.ts            # Email provider configurations
 │   ├── session.ts              # Session management
-│   └── pdf-processor.ts        # PDF extraction and Excel generation
+│   └── pdf-processor.ts        # PDF/DOCX extraction and Excel generation
 ├── types/
 │   └── index.ts                # TypeScript type definitions
-├── package.json                # Dependencies
+├── package.json                # Dependencies (includes GSAP, Lenis)
 ├── tsconfig.json               # TypeScript configuration
-├── tailwind.config.ts          # Tailwind CSS configuration
+├── tailwind.config.ts          # Tailwind CSS configuration with custom fonts
 ├── next.config.js              # Next.js configuration
 └── vercel.json                 # Vercel deployment configuration
 ```

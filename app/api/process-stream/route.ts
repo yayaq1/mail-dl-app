@@ -231,7 +231,7 @@ export async function POST(request: NextRequest) {
                     }
 
                     // Write file concurrently (don't await yet)
-                    const filepath = path.join(outputDir, filename);
+                    const filepath = path.join(outputDir!, filename);
                     fileWrites.push(fs.writeFile(filepath, attachment.content));
 
                     emailMetadata.push({
@@ -240,7 +240,7 @@ export async function POST(request: NextRequest) {
                       subject,
                       date,
                       filename: filename,
-                      filePath: `/${sessionFolderName}/${filename}`,
+                      filePath: `/${sessionFolderName!}/${filename}`,
                       fileType: 'PDF',
                     });
                   }
@@ -259,7 +259,7 @@ export async function POST(request: NextRequest) {
                     }
 
                     // Write file concurrently (don't await yet)
-                    const filepath = path.join(outputDir, filename);
+                    const filepath = path.join(outputDir!, filename);
                     fileWrites.push(fs.writeFile(filepath, attachment.content));
 
                     emailMetadata.push({
@@ -268,7 +268,7 @@ export async function POST(request: NextRequest) {
                       subject,
                       date,
                       filename: filename,
-                      filePath: `/${sessionFolderName}/${filename}`,
+                      filePath: `/${sessionFolderName!}/${filename}`,
                       fileType: 'DOCX',
                     });
                   }
@@ -350,7 +350,7 @@ export async function POST(request: NextRequest) {
           fgColor: { argb: 'FFD3D3D3' },
         };
 
-        const excelPath = path.join(outputDir, 'email_documents_summary.xlsx');
+        const excelPath = path.join(outputDir!, 'email_documents_summary.xlsx');
         await workbook.xlsx.writeFile(excelPath);
 
         sendSSE(controller, { type: 'excel', message: 'Excel summary created!' });
@@ -366,14 +366,14 @@ export async function POST(request: NextRequest) {
           output.on('close', resolve);
           archive.on('error', reject);
           archive.pipe(output);
-          archive.directory(outputDir, false);
+          archive.directory(outputDir!, false);
           archive.finalize();
         });
 
         sendSSE(controller, { type: 'zip', message: 'ZIP archive created!' });
 
         // Store for download
-        tempStorage.set(sessionId, { zipPath, outputDir });
+        tempStorage.set(sessionId!, { zipPath, outputDir: outputDir! });
 
         // Complete
         sendSSE(controller, {

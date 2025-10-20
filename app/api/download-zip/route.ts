@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
     try {
       const zipBuffer = await fs.readFile(zipPath);
 
-      return new NextResponse(zipBuffer, {
+      return new NextResponse(new Uint8Array(zipBuffer), {
         headers: {
           'Content-Type': 'application/zip',
           'Content-Disposition': `attachment; filename="email-pdfs-${Date.now()}.zip"`,

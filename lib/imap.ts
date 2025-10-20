@@ -76,7 +76,7 @@ export class ImapClient {
               name: fullPath,
               displayName: fullPath,
             });
-            if (box && typeof box === 'object' && box.children) {
+            if (box && typeof box === 'object' && 'children' in box && box.children) {
               extractFolders(box.children, fullPath);
             }
           }
@@ -193,7 +193,7 @@ export class ImapClient {
         pendingMessages++;
         
         msg.on('body', (stream) => {
-          simpleParser(stream, (err, parsed) => {
+          simpleParser(stream as any, (err, parsed) => {
             if (err) {
               console.error('Error parsing email:', err);
             } else {

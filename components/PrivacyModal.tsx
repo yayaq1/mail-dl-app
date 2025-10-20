@@ -46,7 +46,7 @@ export default function PrivacyModal() {
             <Eye className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
             <div>
               <h4 className="font-medium text-sm text-gray-900 dark:text-gray-100">No Data Collection</h4>
-              <p className="text-xs text-gray-600 dark:text-gray-300">We don't collect, store, or track any personal information beyond what's necessary for the service.</p>
+              <p className="text-xs text-gray-600 dark:text-gray-300">We don&apos;t collect, store, or track any personal information beyond what&apos;s necessary for the service.</p>
             </div>
           </div>
           

@@ -55,6 +55,7 @@ export default function ProcessingProgress({
         abortControllerRef.current.abort();
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const startProcessing = async () => {

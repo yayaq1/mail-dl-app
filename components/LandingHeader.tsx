@@ -1,0 +1,67 @@
+"use client";
+
+import { useEffect, useState } from "react";
+
+export function LandingHeader() {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  return (
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled ? "bg-[#0A0A0A]/80 backdrop-blur-md border-b border-white/10" : ""
+      }`}
+    >
+      <div className="max-w-7xl mx-auto px-6 py-4">
+        <div className="flex items-center justify-between">
+          {/* Logo */}
+          <div className="flex items-center">
+            <h1 className="font-serif text-2xl font-light tracking-tight text-[#F7F7F7]">
+              Fetchr
+            </h1>
+          </div>
+
+          {/* Navigation */}
+          <nav className="hidden md:flex items-center space-x-8">
+            <a
+              href="#features"
+              className="text-sm text-[#A0A0A0] hover:text-[#F7F7F7] transition-colors"
+            >
+              Features
+            </a>
+            <a
+              href="#pricing"
+              className="text-sm text-[#A0A0A0] hover:text-[#F7F7F7] transition-colors"
+            >
+              Pricing
+            </a>
+            <a
+              href="#contact"
+              className="text-sm text-[#A0A0A0] hover:text-[#F7F7F7] transition-colors"
+            >
+              Contact
+            </a>
+          </nav>
+
+          {/* CTA Button */}
+          <div>
+            <a
+              href="/app"
+              className="px-6 py-2.5 bg-[#2C64FF] text-[#F7F7F7] text-sm font-medium rounded-full hover:bg-[#2C64FF]/90 transition-all duration-200 inline-block"
+            >
+              Get Started
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+  );
+}

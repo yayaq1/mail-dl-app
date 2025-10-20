@@ -1,12 +1,9 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
 import './globals.css';
 
-const inter = Inter({ subsets: ['latin'] });
-
 export const metadata: Metadata = {
-  title: 'Email Bulk Attachment Downloader',
-  description: 'Bulk download PDF attachments from your email inbox - Perfect for recruiters managing CVs and applications',
+  title: 'Mail DL - Email Attachment Downloader',
+  description: 'Bulk download PDF and DOCX attachments from your email inbox - Perfect for recruiters managing CVs and applications. Secure, open-source, and effortless.',
 };
 
 export default function RootLayout({
@@ -15,8 +12,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html lang="en" suppressHydrationWarning>
+      <body>{children}</body>
     </html>
   );
 }
