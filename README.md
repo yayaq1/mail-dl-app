@@ -1,4 +1,4 @@
-# Mail DL - Email Attachment Downloader
+# Fetchr - Email Attachment Downloader
 
 A beautiful Next.js web application with an elegant landing page that allows users to bulk download PDF and DOCX attachments from their email inbox. Built with TypeScript, React, GSAP animations, and deployed on Vercel.
 

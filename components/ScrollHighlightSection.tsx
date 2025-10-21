@@ -24,12 +24,8 @@ export function ScrollHighlightSection() {
   useEffect(() => {
     if (!containerRef.current || !contentRef.current) return;
 
-    // Let Lenis initialize first
-    const initTimer = setTimeout(() => {
-      const container = containerRef.current;
-      const content = contentRef.current;
-      
-      if (!container || !content) return;
+    const container = containerRef.current;
+    const content = contentRef.current;
     
     // Get all characters and highlight words
     const chars = content.querySelectorAll(".char");
@@ -52,7 +48,7 @@ export function ScrollHighlightSection() {
       scrollTrigger: {
         trigger: container,
         start: "top top",
-        end: "85% bottom", // Finish animation earlier so last words highlight before scroll ends
+        end: "95% bottom", // Use 95% of the scroll distance for character animation
         scrub: 2,
       },
     });
@@ -63,8 +59,8 @@ export function ScrollHighlightSection() {
         opacity: 1,
         scrollTrigger: {
           trigger: container,
-          start: `${index * 10}% top`,
-          end: `${85 - (highlightWords.length - index) * 10}% bottom`,
+          start: `${index * 12}% top`,
+          end: `${95 - (highlightWords.length - index) * 12}% bottom`,
           scrub: 2,
           onEnter: () => {
             word.classList.add("underline", "decoration-2", "underline-offset-[0.35em]", "decoration-[#2C64FF]");
@@ -81,13 +77,8 @@ export function ScrollHighlightSection() {
         },
       });
     });
-    
-      // Refresh ScrollTrigger after all animations are set up
-      ScrollTrigger.refresh();
-    }, 100);
 
     return () => {
-      clearTimeout(initTimer);
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
   }, []);
@@ -100,7 +91,7 @@ export function ScrollHighlightSection() {
     ));
   };
 
-  const renderWord = (word: string, isHighlight = false, isCTA = false, isPrivacyLink = false) => {
+  const renderWord = (word: string, isHighlight = false, isCTA = false, isPrivacyLink = false, isGitHubLink = false) => {
     if (isCTA) {
       return (
         <a 
@@ -125,6 +116,19 @@ export function ScrollHighlightSection() {
         </button>
       );
     }
+    if (isGitHubLink) {
+      return (
+        <a
+          href="https://github.com/yayaq1/mail-dl-app"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="highlight-word whitespace-nowrap cursor-pointer hover:text-[#2C64FF] transition-colors"
+          style={{ opacity: 0.25 }}
+        >
+          {splitText(word)}
+        </a>
+      );
+    }
     if (isHighlight) {
       return (
         <span className="highlight-word whitespace-nowrap" style={{ opacity: 0.25 }}>
@@ -138,14 +142,14 @@ export function ScrollHighlightSection() {
   return (
     <section
       ref={containerRef}
-      className="relative min-h-[500vh]"
+      className="relative min-h-[500vh] z-0"
     >
       <div
         ref={contentRef}
-        className="flex items-center justify-center min-h-screen"
+        className="flex items-center justify-center min-h-screen pt-20 md:pt-0"
       >
         <div className="w-full max-w-6xl mx-auto px-8">
-          <h4 className="font-serif text-3xl md:text-4xl lg:text-5xl font-light leading-[1.8] md:leading-[1.9] text-center text-gray-900 dark:text-[#F7F7F7]">
+          <h4 className="font-serif text-2xl md:text-3xl lg:text-4xl font-light leading-[1.7] md:leading-[1.8] text-center text-gray-900 dark:text-[#F7F7F7]">
             {renderWord("Recruiters", true)}{" "}
             {renderWord("receive")}{" "}
             {renderWord("hundreds")}{" "}
@@ -181,8 +185,8 @@ export function ScrollHighlightSection() {
             {renderWord("summary")}{" "}
             {renderWord("of")}{" "}
             {renderWord("candidates.")}{" "}
-            {renderWord("Secure.", false, false, true)}{" "}
-            {renderWord("Open-source.", true)}{" "}
+            {renderWord("Secure.", true, false, true, false)}{" "}
+            {renderWord("Open-source.", true, false, false, true)}{" "}
             {renderWord("Try it free.", false, true)}
           </h4>
         </div>

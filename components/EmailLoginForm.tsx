@@ -188,7 +188,17 @@ export default function EmailLoginForm({ onSuccess, onError }: EmailLoginFormPro
         </form>
 
         <div className="mt-4 text-xs text-gray-500 dark:text-gray-400 text-center">
-          <p>Currently supports Dreamhost Webmail. More providers coming soon!</p>
+          <p>Currently supports Dreamhost Webmail. More providers coming soon, if you decide to{' '}
+            <a 
+              href="https://github.com/yayaq1/mail-dl-app" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-[#2C64FF] hover:underline"
+            >
+              contribute
+            </a>
+            {' '}to the project :p
+          </p>
         </div>
       </div>
     </div>

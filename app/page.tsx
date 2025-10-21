@@ -12,13 +12,13 @@ export default function Home() {
         <main className="pt-20">
           <ScrollHighlightSection />
           {/* CTA Section */}
-          <section className="py-24 px-6 text-center bg-gray-50 dark:bg-[#0A0A0A]">
+          <section className="relative z-10 py-24 px-6 text-center bg-gray-50 dark:bg-[#0A0A0A]">
             <div className="max-w-4xl mx-auto">
               <h2 className="font-serif text-4xl md:text-5xl font-light mb-6 text-gray-900 dark:text-[#F7F7F7]">
                 Ready to save hours every&nbsp;week?
               </h2>
               <p className="text-lg text-gray-600 dark:text-[#A0A0A0] mb-8 max-w-2xl mx-auto leading-relaxed">
-                Join hundreds of recruiters who have already automated their&nbsp;workflow. 
+                Download email attachments in bulk with a clean summary, really easing the job of&nbsp;recruiters. 
                 Open-source, secure, and built by the&nbsp;community.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
