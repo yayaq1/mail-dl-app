@@ -301,16 +301,56 @@ Clears the user session.
 }
 ```
 
+## Contributing
+
+We welcome contributions! Fetchr is designed with extensibility in mind, making it easy to add support for new email providers.
+
+### Adding New Email Providers
+
+Fetchr uses a **configuration-driven architecture** that makes adding new email providers simple - usually just a 3-line addition to `lib/providers.ts`!
+
+**Quick Start:**
+1. Add provider configuration to `lib/providers.ts`
+2. Test thoroughly (connection, folders, downloads)
+3. Submit a Pull Request
+
+**Detailed Guide:**
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for:
+- Complete step-by-step guide to adding providers
+- Testing checklist
+- Special cases (Gmail app passwords, ProtonMail Bridge, etc.)
+- Code style guidelines
+- Development workflow
+
+### Architecture Highlights
+
+- ✅ **Generic IMAP Client**: Works with any standard IMAP server
+- ✅ **Configuration Over Code**: Add providers without changing core logic
+- ✅ **Type-Safe**: TypeScript ensures consistency
+- ✅ **Auto-Discovery**: UI automatically displays new providers
+
+### Current Provider Status
+
+| Provider | Status | Notes |
+|----------|--------|-------|
+| Dreamhost | ✅ Fully Tested | Default credentials |
+| Gmail | ⚠️ Ready | Requires app password |
+| Outlook/Office 365 | ⚠️ Ready | May require IMAP enabled |
+| Yahoo | ⚠️ Ready | Requires app password |
+| Others | 📝 Need Testing | IMAP configs added, awaiting tests |
+
+Want to help test a provider? See [CONTRIBUTING.md](./CONTRIBUTING.md)!
+
 ## License
 
 MIT
 
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
 ## Support
 
 For issues and questions, please open an issue on GitHub.
+
+## Acknowledgments
+
+Thanks to all contributors who help make Fetchr better by adding support for more email providers!
 
 
