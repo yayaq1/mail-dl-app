@@ -116,11 +116,14 @@ export default function ProcessingProgress({
                 setIsProcessing(false);
                 
                 try {
-                  // Download the ZIP file
+                  // Download the ZIP file - pass folderName to handle Vercel serverless isolation
                   const zipResponse = await fetch('/api/download-zip', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ sessionId: data.sessionId }),
+                    body: JSON.stringify({ 
+                      sessionId: data.sessionId,
+                      folderName: data.folderName || folder
+                    }),
                   });
                   
                   if (!zipResponse.ok) {
