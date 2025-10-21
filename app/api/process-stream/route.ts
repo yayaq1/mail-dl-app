@@ -23,10 +23,19 @@ interface ProgressUpdate {
   totalPDFs?: number;
   totalDOCX?: number;
   sessionId?: string;
+  folderName?: string;
 }
 
 // Store temporary data
-const tempStorage = new Map<string, { zipPath: string; outputDir: string }>();
+const tempStorage = new Map<string, { zipPath: string; outputDir: string; folderName: string }>();
+
+// Sanitize folder name for use in filename
+function sanitizeFolderName(folderName: string): string {
+  return folderName
+    .replace(/[<>:"/\\|?*\s.]/g, '_')  // Replace special chars and spaces with underscore
+    .replace(/_+/g, '_')  // Replace multiple underscores with single
+    .replace(/^_|_$/g, '');  // Remove leading/trailing underscores
+}
 
 function sendSSE(controller: ReadableStreamDefaultController, data: ProgressUpdate) {
   const message = `data: ${JSON.stringify(data)}\n\n`;
@@ -372,8 +381,9 @@ export async function POST(request: NextRequest) {
 
         sendSSE(controller, { type: 'zip', message: 'ZIP archive created!' });
 
-        // Store for download
-        tempStorage.set(sessionId!, { zipPath, outputDir: outputDir! });
+        // Store for download with folder name
+        const sanitizedFolderName = sanitizeFolderName(folder);
+        tempStorage.set(sessionId!, { zipPath, outputDir: outputDir!, folderName: sanitizedFolderName });
 
         // Complete
         sendSSE(controller, {
@@ -382,7 +392,8 @@ export async function POST(request: NextRequest) {
           totalEmails: messageIds.length,
           totalPDFs: pdfCount,
           totalDOCX: docxCount,
-          sessionId: sessionId
+          sessionId: sessionId,
+          folderName: sanitizedFolderName
         });
 
         // Cleanup after 10 minutes

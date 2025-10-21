@@ -36,23 +36,56 @@ export default function Home() {
     setError('');
   };
 
-  const handleProcessingComplete = (totalEmails: number, totalPDFs: number, totalDOCX: number, zipBlob: Blob) => {
-    // Download the ZIP file
-    const url = window.URL.createObjectURL(zipBlob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `email-documents-${Date.now()}.zip`;
-    document.body.appendChild(a);
-    a.click();
-    window.URL.revokeObjectURL(url);
-    document.body.removeChild(a);
+  const handleProcessingComplete = (totalEmails: number, totalPDFs: number, totalDOCX: number, zipBlob: Blob, folderName: string) => {
+    try {
+      console.log('[App] handleProcessingComplete called', {
+        totalEmails,
+        totalPDFs,
+        totalDOCX,
+        blobSize: zipBlob.size,
+        folderName
+      });
 
-    // Update result and move to complete step
-    setResult({ totalEmails, totalPDFs, totalDOCX });
-    setStep('complete');
+      // Verify blob is valid
+      if (!zipBlob || zipBlob.size === 0) {
+        console.error('[App] Invalid blob received');
+        setError('Downloaded file is empty or invalid');
+        return;
+      }
 
-    // Logout to clear session
-    fetch('/api/logout', { method: 'POST' });
+      // Download the ZIP file
+      const url = window.URL.createObjectURL(zipBlob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${folderName}.zip`;
+      a.style.display = 'none';
+      document.body.appendChild(a);
+      
+      console.log('[App] Triggering download:', a.download);
+      
+      // Trigger download with a small delay for better browser compatibility
+      setTimeout(() => {
+        a.click();
+        console.log('[App] Download triggered');
+        
+        // Cleanup after a delay to ensure download starts
+        setTimeout(() => {
+          window.URL.revokeObjectURL(url);
+          document.body.removeChild(a);
+          console.log('[App] Download cleanup complete');
+        }, 1000);
+      }, 100);
+
+      // Update result and move to complete step
+      setResult({ totalEmails, totalPDFs, totalDOCX });
+      setStep('complete');
+
+      // Logout to clear session
+      fetch('/api/logout', { method: 'POST' });
+    } catch (error: any) {
+      console.error('[App] Error in handleProcessingComplete:', error);
+      setError(error.message || 'Failed to download file');
+    }
   };
 
   const handleProcessingError = (errorMessage: string) => {

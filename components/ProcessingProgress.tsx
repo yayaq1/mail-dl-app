@@ -5,7 +5,7 @@ import { Loader2, FileText, CheckCircle, XCircle, StopCircle } from 'lucide-reac
 
 interface ProcessingProgressProps {
   folder: string;
-  onComplete: (totalEmails: number, totalPDFs: number, totalDOCX: number, zipBlob: Blob) => void;
+  onComplete: (totalEmails: number, totalPDFs: number, totalDOCX: number, zipBlob: Blob, folderName: string) => void;
   onError: (error: string) => void;
   onCancel: () => void;
 }
@@ -106,17 +106,47 @@ export default function ProcessingProgress({
               const data = JSON.parse(line.slice(6));
               
               if (data.type === 'complete') {
-                setIsProcessing(false);
-                // Download the ZIP file
-                const zipResponse = await fetch('/api/download-zip', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({ sessionId: data.sessionId }),
+                console.log('[ProcessingProgress] Processing complete, downloading ZIP...', {
+                  sessionId: data.sessionId,
+                  folderName: data.folderName,
+                  totalEmails: data.totalEmails,
+                  totalPDFs: data.totalPDFs
                 });
                 
-                if (zipResponse.ok) {
+                setIsProcessing(false);
+                
+                try {
+                  // Download the ZIP file
+                  const zipResponse = await fetch('/api/download-zip', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ sessionId: data.sessionId }),
+                  });
+                  
+                  if (!zipResponse.ok) {
+                    const errorText = await zipResponse.text();
+                    console.error('[ProcessingProgress] Failed to download ZIP:', errorText);
+                    throw new Error(`Failed to download ZIP: ${zipResponse.status} ${zipResponse.statusText}`);
+                  }
+                  
                   const blob = await zipResponse.blob();
-                  onComplete(data.totalEmails, data.totalPDFs, data.totalDOCX || 0, blob);
+                  console.log('[ProcessingProgress] ZIP blob received:', {
+                    size: blob.size,
+                    type: blob.type
+                  });
+                  
+                  if (blob.size === 0) {
+                    throw new Error('Downloaded ZIP file is empty');
+                  }
+                  
+                  // Small delay to ensure blob is fully ready
+                  await new Promise(resolve => setTimeout(resolve, 100));
+                  
+                  onComplete(data.totalEmails, data.totalPDFs, data.totalDOCX || 0, blob, data.folderName || folder);
+                  console.log('[ProcessingProgress] Download complete, calling onComplete callback');
+                } catch (downloadError: any) {
+                  console.error('[ProcessingProgress] Error during ZIP download:', downloadError);
+                  onError(downloadError.message || 'Failed to download ZIP file');
                 }
                 return;
               }
