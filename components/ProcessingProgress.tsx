@@ -106,37 +106,57 @@ export default function ProcessingProgress({
               const data = JSON.parse(line.slice(6));
               
               if (data.type === 'complete') {
-                console.log('[ProcessingProgress] Processing complete, downloading ZIP...', {
+                console.log('[ProcessingProgress] Processing complete, preparing download...', {
                   sessionId: data.sessionId,
                   folderName: data.folderName,
                   totalEmails: data.totalEmails,
-                  totalPDFs: data.totalPDFs
+                  totalPDFs: data.totalPDFs,
+                  hasZipData: !!data.zipData
                 });
                 
                 setIsProcessing(false);
                 
                 try {
-                  // Download the ZIP file - pass folderName to handle Vercel serverless isolation
-                  const zipResponse = await fetch('/api/download-zip', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ 
-                      sessionId: data.sessionId,
-                      folderName: data.folderName || folder
-                    }),
-                  });
+                  let blob: Blob;
                   
-                  if (!zipResponse.ok) {
-                    const errorText = await zipResponse.text();
-                    console.error('[ProcessingProgress] Failed to download ZIP:', errorText);
-                    throw new Error(`Failed to download ZIP: ${zipResponse.status} ${zipResponse.statusText}`);
+                  // If ZIP data is included in the SSE message (Vercel-compatible approach)
+                  if (data.zipData) {
+                    console.log('[ProcessingProgress] Decoding ZIP data from SSE...');
+                    // Decode base64 to binary
+                    const binaryString = atob(data.zipData);
+                    const bytes = new Uint8Array(binaryString.length);
+                    for (let i = 0; i < binaryString.length; i++) {
+                      bytes[i] = binaryString.charCodeAt(i);
+                    }
+                    blob = new Blob([bytes], { type: 'application/zip' });
+                    console.log('[ProcessingProgress] ZIP blob created from SSE data:', {
+                      size: blob.size,
+                      type: blob.type
+                    });
+                  } else {
+                    // Fallback: Download from separate endpoint (localhost compatibility)
+                    console.log('[ProcessingProgress] No ZIP data in SSE, falling back to download endpoint...');
+                    const zipResponse = await fetch('/api/download-zip', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ 
+                        sessionId: data.sessionId,
+                        folderName: data.folderName || folder
+                      }),
+                    });
+                    
+                    if (!zipResponse.ok) {
+                      const errorText = await zipResponse.text();
+                      console.error('[ProcessingProgress] Failed to download ZIP:', errorText);
+                      throw new Error(`Failed to download ZIP: ${zipResponse.status} ${zipResponse.statusText}`);
+                    }
+                    
+                    blob = await zipResponse.blob();
+                    console.log('[ProcessingProgress] ZIP blob received from endpoint:', {
+                      size: blob.size,
+                      type: blob.type
+                    });
                   }
-                  
-                  const blob = await zipResponse.blob();
-                  console.log('[ProcessingProgress] ZIP blob received:', {
-                    size: blob.size,
-                    type: blob.type
-                  });
                   
                   if (blob.size === 0) {
                     throw new Error('Downloaded ZIP file is empty');
@@ -148,8 +168,8 @@ export default function ProcessingProgress({
                   onComplete(data.totalEmails, data.totalPDFs, data.totalDOCX || 0, blob, data.folderName || folder);
                   console.log('[ProcessingProgress] Download complete, calling onComplete callback');
                 } catch (downloadError: any) {
-                  console.error('[ProcessingProgress] Error during ZIP download:', downloadError);
-                  onError(downloadError.message || 'Failed to download ZIP file');
+                  console.error('[ProcessingProgress] Error during ZIP processing:', downloadError);
+                  onError(downloadError.message || 'Failed to process ZIP file');
                 }
                 return;
               }

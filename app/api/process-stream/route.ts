@@ -24,6 +24,7 @@ interface ProgressUpdate {
   totalDOCX?: number;
   sessionId?: string;
   folderName?: string;
+  zipData?: string; // Base64 encoded ZIP file data for Vercel compatibility
 }
 
 // Store temporary data
@@ -381,11 +382,19 @@ export async function POST(request: NextRequest) {
 
         sendSSE(controller, { type: 'zip', message: 'ZIP archive created!' });
 
-        // Store for download with folder name
+        // Read ZIP file and encode as base64 for Vercel compatibility
+        // This avoids filesystem isolation issues between serverless functions
         const sanitizedFolderName = sanitizeFolderName(folder);
+        
+        console.log('[process-stream] Reading ZIP file to send via SSE...');
+        const zipBuffer = await fs.readFile(zipPath);
+        const zipBase64 = zipBuffer.toString('base64');
+        console.log('[process-stream] ZIP encoded, size:', zipBuffer.length, 'bytes');
+
+        // Store for download with folder name (for localhost compatibility)
         tempStorage.set(sessionId!, { zipPath, outputDir: outputDir!, folderName: sanitizedFolderName });
 
-        // Complete
+        // Send ZIP data in the complete message to avoid cross-function file access
         sendSSE(controller, {
           type: 'complete',
           message: 'Processing complete!',
@@ -393,7 +402,8 @@ export async function POST(request: NextRequest) {
           totalPDFs: pdfCount,
           totalDOCX: docxCount,
           sessionId: sessionId,
-          folderName: sanitizedFolderName
+          folderName: sanitizedFolderName,
+          zipData: zipBase64 // Send ZIP data directly to client
         });
 
         // Cleanup after 10 minutes
