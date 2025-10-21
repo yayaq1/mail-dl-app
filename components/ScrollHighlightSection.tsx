@@ -97,7 +97,7 @@ export function ScrollHighlightSection() {
         <a 
           href="/app"
           className="highlight-word whitespace-nowrap inline-block border-2 border-[#2C64FF] rounded-2xl px-6 py-2 mt-2 hover:bg-[#2C64FF]/10 transition-all cursor-pointer"
-          style={{ opacity: 0.25 }}
+          style={{ opacity: 1 }}
         >
           <span className="text-[#2C64FF] font-medium underline decoration-2 underline-offset-4">
             {splitText(word)}
@@ -149,7 +149,7 @@ export function ScrollHighlightSection() {
         className="flex items-center justify-center min-h-screen pt-20 md:pt-0"
       >
         <div className="w-full max-w-6xl mx-auto px-8">
-          <h4 className="font-serif text-2xl md:text-3xl lg:text-4xl font-light leading-[1.7] md:leading-[1.8] text-center text-gray-900 dark:text-[#F7F7F7]">
+          <h4 className="font-serif text-2xl md:text-4xl lg:text-5xl font-light leading-[1.7] md:leading-[1.9] text-center text-gray-900 dark:text-[#F7F7F7]">
             {renderWord("Recruiters", true)}{" "}
             {renderWord("receive")}{" "}
             {renderWord("hundreds")}{" "}
