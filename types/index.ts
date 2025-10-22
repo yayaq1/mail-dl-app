@@ -25,6 +25,7 @@ export interface EmailMetadata {
   date: string;
   pdfFilename: string;
   pdfPath: string;
+  emailBody: string;
 }
 
 export interface ProcessResult {

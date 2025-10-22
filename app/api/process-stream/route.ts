@@ -182,6 +182,7 @@ export async function POST(request: NextRequest) {
           filename: string;
           filePath: string;
           fileType: string;
+          emailBody: string;
         }> = [];
 
         let pdfCount = 0;
@@ -219,6 +220,7 @@ export async function POST(request: NextRequest) {
               const senderEmail = from.match(/<(.+)>/)? from.match(/<(.+)>/)![1] : from;
               const senderName = from.includes('<') ? from.split('<')[0].trim().replace(/["']/g, '') : from;
               const date = email.date ? email.date.toISOString().replace('T', ' ').split('.')[0] : 'Unknown';
+              const emailBody = email.text || '';
 
               const emailMetadata: typeof metadata = [];
               const fileWrites: Promise<void>[] = [];
@@ -252,6 +254,7 @@ export async function POST(request: NextRequest) {
                       filename: filename,
                       filePath: `/${sessionFolderName!}/${filename}`,
                       fileType: 'PDF',
+                      emailBody,
                     });
                   }
                   // Check for DOCX
@@ -280,6 +283,7 @@ export async function POST(request: NextRequest) {
                       filename: filename,
                       filePath: `/${sessionFolderName!}/${filename}`,
                       fileType: 'DOCX',
+                      emailBody,
                     });
                   }
                 }
@@ -294,6 +298,7 @@ export async function POST(request: NextRequest) {
                   filename: 'No document found',
                   filePath: 'N/A',
                   fileType: 'N/A',
+                  emailBody,
                 });
               }
 
@@ -349,6 +354,7 @@ export async function POST(request: NextRequest) {
           { header: 'File Type', key: 'fileType', width: 12 },
           { header: 'Filename', key: 'filename', width: 40 },
           { header: 'File Path', key: 'filePath', width: 60 },
+          { header: 'Email Body', key: 'emailBody', width: 80 },
         ];
 
         metadata.forEach((item) => worksheet.addRow(item));

@@ -98,6 +98,7 @@ export class PDFProcessor {
       const senderEmail = this.extractEmailAddress(from);
       const senderName = this.extractSenderName(from);
       const date = this.formatDate(email.date);
+      const emailBody = email.text || '';
 
       let pdfFound = false;
 
@@ -120,6 +121,7 @@ export class PDFProcessor {
                 date,
                 pdfFilename: filename,
                 pdfPath: path.join(this.outputDir, filename),
+                emailBody,
               });
             }
           }
@@ -134,6 +136,7 @@ export class PDFProcessor {
           date,
           pdfFilename: 'No PDF found',
           pdfPath: 'N/A',
+          emailBody,
         });
       }
 
@@ -157,6 +160,7 @@ export class PDFProcessor {
       { header: 'Date', key: 'date', width: 20 },
       { header: 'PDF Filename', key: 'pdfFilename', width: 40 },
       { header: 'PDF Path', key: 'pdfPath', width: 60 },
+      { header: 'Email Body', key: 'emailBody', width: 80 },
     ];
 
     metadata.forEach((item) => {
