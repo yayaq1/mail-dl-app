@@ -271,7 +271,7 @@ export default function ProcessingProgress({
         )}
 
         {/* Live Logs */}
-        <div className="bg-gray-900 dark:bg-gray-900 rounded-lg p-4 mb-4 h-64 sm:h-96 overflow-y-auto font-mono text-sm scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800">
+        <div className="bg-gray-900 dark:bg-gray-900 rounded-lg p-4 mb-4 h-64 sm:h-96 overflow-y-auto font-mono text-sm">
           {logs.map((log, index) => (
             <div
               key={index}
