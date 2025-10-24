@@ -114,12 +114,6 @@ export default function ProcessingProgress({
                   hasZipData: !!data.zipData
                 });
                 
-                // Add "Preparing download..." message
-                setLogs(prev => [...prev, { 
-                  type: 'zip', 
-                  message: 'Preparing ZIP download... This may take 10-20 seconds for large files.' 
-                }]);
-                
                 setIsProcessing(false);
                 
                 try {
@@ -128,10 +122,6 @@ export default function ProcessingProgress({
                   // If ZIP data is included in the SSE message (Vercel-compatible approach)
                   if (data.zipData) {
                     console.log('[ProcessingProgress] Decoding ZIP data from SSE...');
-                    setLogs(prev => [...prev, { 
-                      type: 'zip', 
-                      message: 'Receiving ZIP file...' 
-                    }]);
                     // Decode base64 to binary
                     const binaryString = atob(data.zipData);
                     const bytes = new Uint8Array(binaryString.length);
@@ -146,10 +136,6 @@ export default function ProcessingProgress({
                   } else {
                     // Fallback: Download from separate endpoint (localhost compatibility)
                     console.log('[ProcessingProgress] No ZIP data in SSE, falling back to download endpoint...');
-                    setLogs(prev => [...prev, { 
-                      type: 'zip', 
-                      message: 'Downloading ZIP file from server...' 
-                    }]);
                     const zipResponse = await fetch('/api/download-zip', {
                       method: 'POST',
                       headers: { 'Content-Type': 'application/json' },
@@ -175,11 +161,6 @@ export default function ProcessingProgress({
                   if (blob.size === 0) {
                     throw new Error('Downloaded ZIP file is empty');
                   }
-                  
-                  setLogs(prev => [...prev, { 
-                    type: 'zip', 
-                    message: '✓ ZIP file ready! Starting download to your browser...' 
-                  }]);
                   
                   // Small delay to ensure blob is fully ready
                   await new Promise(resolve => setTimeout(resolve, 100));

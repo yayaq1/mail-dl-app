@@ -398,6 +398,7 @@ export async function POST(request: NextRequest) {
         });
 
         sendSSE(controller, { type: 'zip', message: 'ZIP archive created!' });
+        sendSSE(controller, { type: 'zip', message: 'Large ZIP files may take 1-2 minutes to download to your system. Please wait...' });
 
         // Read ZIP file and encode as base64 for Vercel compatibility
         // This avoids filesystem isolation issues between serverless functions
