@@ -166,12 +166,23 @@ export async function POST(request: NextRequest) {
         });
 
         const attachmentMap = await imapClient.checkForAttachments(messageIds);
-        const emailsWithAttachments = messageIds.filter(id => attachmentMap.get(id));
+        let emailsWithAttachments = messageIds.filter(id => attachmentMap.get(id));
 
-        sendSSE(controller, { 
-          type: 'email', 
-          message: `Found ${emailsWithAttachments.length} emails with attachments out of ${messageIds.length} total`,
-        });
+        // Limit to 450 emails to prevent timeouts
+        const MAX_EMAILS = 450;
+        const originalCount = emailsWithAttachments.length;
+        if (emailsWithAttachments.length > MAX_EMAILS) {
+          emailsWithAttachments = emailsWithAttachments.slice(0, MAX_EMAILS);
+          sendSSE(controller, { 
+            type: 'email', 
+            message: `Found ${originalCount} emails with attachments (limiting to ${MAX_EMAILS} to prevent timeout)`,
+          });
+        } else {
+          sendSSE(controller, { 
+            type: 'email', 
+            message: `Found ${emailsWithAttachments.length} emails with attachments out of ${messageIds.length} total`,
+          });
+        }
 
         // Process emails in parallel batches for much faster performance
         const metadata: Array<{
