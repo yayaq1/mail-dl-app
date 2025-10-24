@@ -166,3 +166,20 @@ html.lenis {
   @apply bg-muted-foreground/50;
 }
 
+/* Dark scrollbar for terminal/logs */
+.bg-gray-900::-webkit-scrollbar {
+  width: 8px;
+}
+
+.bg-gray-900::-webkit-scrollbar-track {
+  @apply bg-gray-800 rounded;
+}
+
+.bg-gray-900::-webkit-scrollbar-thumb {
+  @apply bg-gray-600 rounded;
+}
+
+.bg-gray-900::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-500;
+}
+
