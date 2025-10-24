@@ -81,7 +81,7 @@ export default function DownloadResult({
               <p className="font-medium mb-1">Download Contents:</p>
               <ul className="list-disc list-inside space-y-1 text-gray-600 dark:text-gray-400">
                 <li>All PDF & DOCX attachments</li>
-                <li>Excel summary with email metadata</li>
+                <li>Excel summary with email metadata (search for "email" to find the .xlsx file)</li>
                 <li>Organized in a ZIP archive</li>
               </ul>
             </div>
